@@ -13,17 +13,14 @@ public class Enemy : MonoBehaviour
         if (collider.TryGetComponent(out Player player))
         {
             player.ApplyDamage(_damage);
-            Die();
+
         }
-        if (collider.CompareTag("Destroyr"))
-        {
-            Die();
-        }  
+        Die();
     }
 
 
     private void Die()
     {
-        Destroy(gameObject);
+        gameObject.SetActive(false);
     }
 }

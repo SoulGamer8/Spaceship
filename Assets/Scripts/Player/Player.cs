@@ -1,4 +1,6 @@
+using System;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
@@ -6,24 +8,27 @@ public class Player : MonoBehaviour
 
     [SerializeField] private int _health;
 
-
-    private int _currentHealth;
+    public event UnityAction<int> HealthChanged;
+    public event UnityAction Died;
 
     private void Start()
     {
-        _currentHealth = _health;
+        HealthChanged?.Invoke(_health);
     }
 
     public void ApplyDamage(int damage)
     {
-        if (_currentHealth<=0)
+        _health -= damage;
+        HealthChanged?.Invoke(_health);
+        if (_health<=0)
            Die();
-        _currentHealth -= damage;
+
     }
 
 
     private void Die()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        Died?.Invoke();
+    
     }
 }
